@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.5'
+    id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'kr.co.shop'
+version = '1.0-SNAPSHOT'
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation'org.springframework.boot:spring-boot-starter-jdbc'
+    runtimeOnly'com.oracle.database.jdbc:ojdbc11:23.2.0.0'  // Oracle JDBC
+
+    implementation'com.oracle.database.security:oraclepki'
+    implementation'com.oracle.database.security:osdt_core'
+    implementation'com.oracle.database.security:osdt_cert'
+
+//    implementation 'com.oracle.database.jdbc:ojdbc11:23.9.0.25.07'
+//    implementation("com.oracle.database.security:oraclepki:23.3.0.23.09")
+//    implementation("com.oracle.database.security:osdt_cert:21.17.0.0")
+//    implementation("com.oracle.database.security:osdt_core:21.17.0.0")
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}
