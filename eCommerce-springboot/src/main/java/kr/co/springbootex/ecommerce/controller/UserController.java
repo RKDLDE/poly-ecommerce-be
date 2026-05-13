@@ -1,6 +1,6 @@
 package kr.co.springbootex.ecommerce.controller;
 
-import kr.co.springbootex.ecommerce.domain.User;
+import kr.co.springbootex.ecommerce.entity.User;
 import kr.co.springbootex.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,44 +1,27 @@
 package kr.co.springbootex.ecommerce.service;
 
-import kr.co.springbootex.ecommerce.domain.User;
-import kr.co.springbootex.ecommerce.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import kr.co.springbootex.ecommerce.entity.User;
+import kr.co.springbootex.ecommerce.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    @Autowired
-    public UserService(UserRepository userRepository){
-        this.userRepository = userRepository;
+    public UserService(UserMapper userMapper) {
+        this.userMapper = userMapper;
     }
 
     // SELECT
     public List<User> getAllUsers(){
-        return userRepository.findAll();
+        return userMapper.findAll();
     }
 
     // SELECT by ID
     public User getUserById(Long id){
-        return userRepository.findById(id);
-    }
-
-    // INSERT
-    public int registerUser(User user){
-        return userRepository.save(user);
-    }
-
-    // UPDATE
-    public int modifyUser(User user){
-        return userRepository.update(user);
-    }
-
-    // DELETE
-    public int removeUser(Long id){
-        return userRepository.delete(id);
+        return userMapper.findById(id);
     }
 
 }

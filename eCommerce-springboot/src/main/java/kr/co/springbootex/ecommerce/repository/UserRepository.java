@@ -1,59 +1,17 @@
 package kr.co.springbootex.ecommerce.repository;
 
-import kr.co.springbootex.ecommerce.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import kr.co.springbootex.ecommerce.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public class UserRepository {
-    private  final JdbcTemplate jdbcTemplate;
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Autowired
-    public UserRepository(JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    @Query("SELECT u FROM User u WHERE u.name=:name AND u.email=:email")
+    List<User> findByNameAndAge(@Param("name") String name, @Param("email") String email);
 
-    // SELECT
-    public List<User> findAll(){
-        String sql = "SELECT * FROM e_users";
-        return jdbcTemplate.query(sql,
-                (rs, rowNum) -> new User(
-                        rs.getLong("id"),
-                        rs.getString("name"),
-                        rs.getString("email")
-                ));
-    }
-
-    // INSERT
-    public int save(User user){
-        String sql = "INSERT INTO e_users(name, email) VALUES (?, ?)";
-        return jdbcTemplate.update(sql, user.getName(), user.getEmail());
-    }
-
-    // SELECT by ID
-    public User findById(Long id){
-        String sql = "SELECT * FROM e_users WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql,
-                (rs, rowNum) -> new User(
-                        rs.getLong("id"),
-                        rs.getString("name"),
-                        rs.getString("email")
-                ),
-                id);
-    }
-
-    // UPDATE
-    public int update(User user){
-        String sql = "UPDATE e_users SET name = ? email = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getId());
-    }
-
-    // DELETE
-    public int delete(Long id){
-        String sql = "DELETE FROM u_users WHERE id = ?";
-        return jdbcTemplate.update(sql, id);
-    }
 }
