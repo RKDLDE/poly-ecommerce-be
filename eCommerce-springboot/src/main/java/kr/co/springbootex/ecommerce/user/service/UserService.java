@@ -1,4 +1,4 @@
-package kr.co.springbootex.ecommerce.service;
+package kr.co.springbootex.ecommerce.user.service;
 
 import kr.co.springbootex.ecommerce.entity.User;
 import kr.co.springbootex.ecommerce.mapper.UserMapper;
