@@ -30,22 +30,8 @@
         WHERE no_product=#{id}
     </select>
 
-    <select id="findByCategory" parameterType="int" resultType="kr.co.springbootex.ecommerce.product.query.dto.ProductDTO">
-        SELECT
-            no_product,
-            nm_product,
-            nm_detail_explain,
-            nb_file,
-            dt_start_date,
-            dt_end_date,
-            qt_sale_price,
-            qt_stock
-        FROM tb_product
-        WHERE no_product=#{id}
-    </select>
-
     <select id="findByCategory" parameterType="Long" resultType="kr.co.springbootex.ecommerce.product.query.dto.ProductMapCategoryDTO">
-        select
+        SELECT
             p.no_product,
             p.nm_product,
             p.nm_detail_explain,
@@ -56,11 +42,11 @@
             p.qt_stock,
             cp.nb_category,
             c.nm_category
-        from tb_product p
-                 join tb_category_product_mapping cp
-                      on p.no_product = cp.no_product
-                 join tb_category c
-                      on c.nb_category = cp.nb_category
+        FROM tb_product p
+            JOIN tb_category_product_mapping cp
+                ON p.no_product = cp.no_product
+            JOIN tb_category c
+                ON c.nb_category = cp.nb_category
         WHERE c.nb_category=#{id}
     </select>
 </mapper>

@@ -13,17 +13,17 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping()
+@RequestMapping("/products")
 public class ProductQueryController {
     private final ProductService productService;
 
-    @GetMapping("/product")
+    @GetMapping()
     public List<ProductDTO> getAllProducts()
     {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/product/{noProductId}")
+    @GetMapping("/{noProductId}")
     public ProductDTO getProductById(@PathVariable String noProductId){
         return productService.getProductById(noProductId);
     }

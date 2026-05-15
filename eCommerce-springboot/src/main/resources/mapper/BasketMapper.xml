@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.springbootex.ecommerce.basket.query.mapper.BasketMapper">
+    <select id="findById" parameterType="String" resultType="kr.co.springbootex.ecommerce.basket.query.dto.BasketItemDTO">
+        SELECT
+            b.nb_basket,
+            b.id_user,
+            bi.nb_basket_item,
+            bi.cn_basket_item_order,
+            bi.no_product ,
+            bi.qt_basket_item_price ,
+            bi.qt_basket_item ,
+            bi.qt_basket_item_amount
+        FROM tb_basket b
+            JOIN tb_basket_item bi
+                ON b.nb_basket = bi.nb_basket
+        WHERE id_user=#{id}
+    </select>
+</mapper>
