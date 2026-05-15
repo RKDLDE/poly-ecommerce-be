@@ -19,9 +19,10 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation'org.springframework.boot:spring-boot-starter-jdbc'
-    runtimeOnly'com.oracle.database.jdbc:ojdbc11:23.2.0.0'  // Oracle JDBC
-    implementation'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 
+    // oracle
+    runtimeOnly'com.oracle.database.jdbc:ojdbc11:23.2.0.0'
+    implementation'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
     implementation'com.oracle.database.security:oraclepki'
     implementation'com.oracle.database.security:osdt_core'
     implementation'com.oracle.database.security:osdt_cert'
@@ -30,14 +31,16 @@ dependencies {
 //    implementation("com.oracle.database.security:oraclepki:23.3.0.23.09")
 //    implementation("com.oracle.database.security:osdt_cert:21.17.0.0")
 //    implementation("com.oracle.database.security:osdt_core:21.17.0.0")
+
+    // jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    // lombok 라이브러리
+    // lombok
     implementation 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    // lombok 테스트 라이브러리
+    // lombok test
     testImplementation 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 }

@@ -2,21 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="kr.co.springbootex.ecommerce.mapper.UserMapper">
-    <select id="findAll" resultType="kr.co.springbootex.ecommerce.dto.UserResponseDto">
+<mapper namespace="kr.co.springbootex.ecommerce.user.query.mapper.UserMapper">
+    <select id="findAll" resultType="kr.co.springbootex.ecommerce.user.query.dto.UserDTO">
         SELECT
-            id,
-            name,
-            email
-        FROM e_users
+            id_user,
+            nm_user,
+            nm_paswd,
+            no_mobile,
+            nm_email,
+            st_status,
+            cd_user_type
+        FROM tb_user
     </select>
 
-    <select id="findById" parameterType="long" resultType="kr.co.springbootex.ecommerce.dto.UserResponseDto">
+    <select id="findById" parameterType="String" resultType="kr.co.springbootex.ecommerce.user.query.dto.UserDTO">
         SELECT
-            id,
-            name,
-            email
-        FROM e_users
-        WHERE id= #{id}
+            id_user,
+            nm_user,
+            nm_paswd,
+            no_mobile,
+            nm_email,
+            st_status,
+            cd_user_type
+        FROM tb_user
+        WHERE id_user=#{id}
     </select>
 </mapper>

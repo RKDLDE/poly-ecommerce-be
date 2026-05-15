@@ -39,7 +39,7 @@ CREATE TABLE tb_product (
     no_product VARCHAR2(30) NOT NULL,
     nm_product VARCHAR2(200) NOT NULL,
     nm_detail_explain VARCHAR2(4000),
-    nb_file NUMBER(19,0) NOT NULL,
+    nb_file NUMBER(19,0),
     dt_start_date VARCHAR2(8) NOT NULL,
     dt_end_date VARCHAR2(8) NOT NULL,
     qt_sale_price NUMBER(9) NOT NULL,
