@@ -1,24 +1,25 @@
-DROP TABLE tb_order_item;
-DROP TABLE tb_order;
-DROP TABLE tb_basket_item;
-DROP TABLE tb_basket;
-DROP TABLE tb_category_product_mapping;
-DROP TABLE tb_product;
-DROP TABLE tb_category;
-DROP TABLE tb_user;
-DROP TABLE tb_content;
+DROP TABLE tb_order_item CASCADE CONSTRAINTS;
+DROP TABLE tb_order CASCADE CONSTRAINTS;
+DROP TABLE tb_basket_item CASCADE CONSTRAINTS;
+DROP TABLE tb_basket CASCADE CONSTRAINTS;
+DROP TABLE tb_category_product_mapping CASCADE CONSTRAINTS;
+DROP TABLE tb_product CASCADE CONSTRAINTS;
+DROP TABLE tb_category CASCADE CONSTRAINTS;
+DROP TABLE tb_user CASCADE CONSTRAINTS;
+DROP TABLE tb_content CASCADE CONSTRAINTS;
 
 CREATE TABLE tb_user (
-     id_user      VARCHAR2(100)   NOT NULL,
-     nm_user      VARCHAR2(100)   NOT NULL,
-     nm_paswd     VARCHAR2(256)   NOT NULL,
-     no_mobile    VARCHAR2(30)    NOT NULL,
-     nm_email     VARCHAR2(100)   NOT NULL,
-     st_status    VARCHAR2(4)     NOT NULL,
-     cd_user_type VARCHAR2(4)     NOT NULL,
-     CONSTRAINT pk_tb_user PRIMARY KEY (id_user),
-     CONSTRAINT ck_tb_user_status CHECK (st_status IN ('st01', 'st02', 'st03', 'st04')),
-     CONSTRAINT ck_tb_user_type CHECK (cd_user_type IN ('10', '20'))
+    id_user      VARCHAR2(100)   NOT NULL,
+    nm_user      VARCHAR2(100)   NOT NULL,
+    nm_paswd     VARCHAR2(256)   NOT NULL,
+    no_mobile    VARCHAR2(30)    NOT NULL,
+    nm_email     VARCHAR2(100)   NOT NULL,
+    st_status    VARCHAR2(4)     NOT NULL,
+    cd_user_type VARCHAR2(4)     NOT NULL,
+    CONSTRAINT pk_tb_user PRIMARY KEY (id_user),
+    CONSTRAINT ck_tb_user_status CHECK (st_status IN ('st01', 'st02', 'st03', 'st04')),
+    CONSTRAINT uk_tb_user_email UNIQUE (nm_email),
+    CONSTRAINT ck_tb_user_type CHECK (cd_user_type IN ('10', '20'))
 );
 
 CREATE TABLE tb_content (
@@ -49,22 +50,22 @@ CREATE TABLE tb_product (
 );
 
 CREATE TABLE tb_category (
-     nb_category NUMBER(8) NOT NULL,
-     nb_parent_category NUMBER(8),
-     nm_category VARCHAR2(100) NOT NULL,
-     cn_level NUMBER(4),
-     cn_order NUMBER(4),
-     CONSTRAINT pk_tb_category PRIMARY KEY (nb_category),
-     CONSTRAINT fk_tb_category_parent FOREIGN KEY (nb_parent_category) REFERENCES tb_category (nb_category)
+    nb_category NUMBER(8) NOT NULL,
+    nb_parent_category NUMBER(8),
+    nm_category VARCHAR2(100) NOT NULL,
+    cn_level NUMBER(4),
+    cn_order NUMBER(4),
+    CONSTRAINT pk_tb_category PRIMARY KEY (nb_category),
+    CONSTRAINT fk_tb_category_parent FOREIGN KEY (nb_parent_category) REFERENCES tb_category (nb_category)
 );
 
 CREATE TABLE tb_category_product_mapping (
-     nb_category NUMBER(8) NOT NULL,
-     no_product VARCHAR2(30) NOT NULL,
-     cn_order NUMBER(4) NOT NULL,
-     CONSTRAINT pk_tb_category_product_mapping PRIMARY KEY (nb_category, no_product),
-     CONSTRAINT fk_tcpm_category FOREIGN KEY (nb_category) REFERENCES tb_category (nb_category),
-     CONSTRAINT fk_tcpm_product FOREIGN KEY (no_product) REFERENCES tb_product (no_product)
+    nb_category NUMBER(8) NOT NULL,
+    no_product VARCHAR2(30) NOT NULL,
+    cn_order NUMBER(4) NOT NULL,
+    CONSTRAINT pk_tb_category_product_mapping PRIMARY KEY (nb_category, no_product),
+    CONSTRAINT fk_tcpm_category FOREIGN KEY (nb_category) REFERENCES tb_category (nb_category),
+    CONSTRAINT fk_tcpm_product FOREIGN KEY (no_product) REFERENCES tb_product (no_product)
 );
 
 CREATE TABLE tb_basket (

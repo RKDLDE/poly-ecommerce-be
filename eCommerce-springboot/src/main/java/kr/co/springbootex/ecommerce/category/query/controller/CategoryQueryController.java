@@ -1,7 +1,7 @@
 package kr.co.springbootex.ecommerce.category.query.controller;
 
-import kr.co.springbootex.ecommerce.category.query.dto.CategoryDTO;
-import kr.co.springbootex.ecommerce.category.query.service.CategoryService;
+import kr.co.springbootex.ecommerce.category.query.dto.CategoryResponseDTO;
+import kr.co.springbootex.ecommerce.category.query.service.CategoryQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,10 +13,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/categories")
 public class CategoryQueryController {
-    private final CategoryService categoryService;
+    private final CategoryQueryService categoryQueryService;
 
     // 관리자, 사용자: 모든 카테고리 조회
     @GetMapping()
-    public List<CategoryDTO> getAllCategory() {return categoryService.getAllCategory();}
+    public List<CategoryResponseDTO> getAllCategory() {return categoryQueryService.getAllCategory();}
 
 }

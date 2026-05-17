@@ -1,17 +1,12 @@
-//package kr.co.springbootex.ecommerce.user.command.domain.repository;
-//
-//import kr.co.springbootex.ecommerce.user.command.domain.aggregate.entity.User;
-//import org.springframework.data.jpa.repository.JpaRepository;
-//import org.springframework.data.jpa.repository.Query;
-//import org.springframework.data.repository.query.Param;
-//import org.springframework.stereotype.Repository;
-//
-//import java.util.List;
-//
-//@Repository
-//public interface UserRepository extends JpaRepository<User, Long> {
-//
-//    @Query("SELECT u FROM User u WHERE u.name=:name AND u.email=:email")
-//    List<User> findByNameAndAge(@Param("name") String name, @Param("email") String email);
-//
-//}
+package kr.co.springbootex.ecommerce.user.command.domain.repository;
+
+import kr.co.springbootex.ecommerce.user.command.domain.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, String> {
+
+    // 이메일 중복 체크
+    boolean existsByNmEmail(String nmEmail);
+}

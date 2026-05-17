@@ -3,28 +3,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.springbootex.ecommerce.user.query.mapper.UserMapper">
-    <select id="findAll" resultType="kr.co.springbootex.ecommerce.user.query.dto.UserDTO">
+    <select id="findAll" parameterType="kr.co.springbootex.ecommerce.user.query.dto.UserRequestDTO" resultType="kr.co.springbootex.ecommerce.user.query.dto.UserResponseDTO">
         SELECT
-            id_user,
-            nm_user,
-            nm_paswd,
-            no_mobile,
-            nm_email,
-            st_status,
-            cd_user_type
+        id_user,
+        nm_user,
+        no_mobile,
+        nm_email,
+        st_status,
+        cd_user_type
         FROM tb_user
-    </select>
-
-    <select id="findById" parameterType="String" resultType="kr.co.springbootex.ecommerce.user.query.dto.UserDTO">
-        SELECT
-            id_user,
-            nm_user,
-            nm_paswd,
-            no_mobile,
-            nm_email,
-            st_status,
-            cd_user_type
-        FROM tb_user
-        WHERE id_user=#{id}
+        <where>
+            <if test="stStatus != null and stStatus != ''">
+                AND st_status = #{stStatus}
+            </if>
+        </where>
+        ORDER BY id_user DESC
     </select>
 </mapper>

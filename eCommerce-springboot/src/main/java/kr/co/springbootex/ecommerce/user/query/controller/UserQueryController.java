@@ -1,10 +1,11 @@
 package kr.co.springbootex.ecommerce.user.query.controller;
 
-import kr.co.springbootex.ecommerce.user.query.dto.UserDTO;
-import kr.co.springbootex.ecommerce.user.query.service.UserService;
+import kr.co.springbootex.ecommerce.user.query.dto.UserRequestDTO;
+import kr.co.springbootex.ecommerce.user.query.dto.UserResponseDTO;
+import kr.co.springbootex.ecommerce.user.query.service.UserQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,23 +15,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserQueryController {
-    private final UserService userService;
-
-//    @Autowired
-//    public UserQueryController(UserService userService){
-//        this.userService = userService;
-//    }
+    private final UserQueryService userQueryService;
 
     // 관리자: 회원 전부 불러오기
     @GetMapping()
-    public List<UserDTO> getAllUsers(){
-        return userService.getAllUsers();
-    }
-
-    // 사용자: 개인 정보 불러오기
-    @GetMapping("/{idUser}")
-    public UserDTO getUserById(@PathVariable String idUser){
-        return userService.getUserById(idUser);
+    public List<UserResponseDTO> getAllUsers(@ModelAttribute UserRequestDTO userRequestDTO){
+        return userQueryService.getAllUsers(userRequestDTO);
     }
 }
-

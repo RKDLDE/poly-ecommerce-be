@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.springbootex.ecommerce.order.query.mapper.OrderMapper">
+
+    <select id="findAllOrdersForAdmin" parameterType="kr.co.springbootex.ecommerce.order.query.dto.OrderRequestDTO" resultType="kr.co.springbootex.ecommerce.order.query.dto.OrderResponseDTO">
+        SELECT
+        id_order,
+        id_user,
+        qt_order_amount,
+        nm_order_person,
+        nm_delivery_address,
+        da_order,
+        st_order
+        FROM tb_order
+        <where>
+            <if test="idUser != null and idUser != ''">
+                AND id_user LIKE '%' || #{idUser} || '%'
+            </if>
+            <if test="daOrderDate != null and daOrderDate != ''">
+                AND TO_CHAR(da_order, 'YYYY-MM-DD') = #{daOrderDate}
+            </if>
+            <if test="stOrder != null and stOrder != ''">
+                AND st_order = #{stOrder}
+            </if>
+        </where>
+        ORDER BY da_order DESC, id_order DESC
+        OFFSET (#{page} * #{size}) ROWS FETCH NEXT #{size} ROWS ONLY
+    </select>
+
+    <select id="countAllOrdersForAdmin" parameterType="kr.co.springbootex.ecommerce.order.query.dto.OrderRequestDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM tb_order
+        <where>
+            <if test="idUser != null and idUser != ''">
+                AND id_user LIKE '%' || #{idUser} || '%'
+            </if>
+            <if test="daOrderDate != null and daOrderDate != ''">
+                AND TO_CHAR(da_order, 'YYYY-MM-DD') = #{daOrderDate}
+            </if>
+            <if test="stOrder != null and stOrder != ''">
+                AND st_order = #{stOrder}
+            </if>
+        </where>
+    </select>
+
+    <select id="findOrderItemsByOrderId" parameterType="String" resultType="kr.co.springbootex.ecommerce.order.query.dto.OrderItemResponseDTO">
+        SELECT
+            oi.id_order_item,
+            oi.id_order,
+            oi.cn_order_item,
+            oi.no_product,
+            p.nm_product,
+            oi.qt_unit_price,
+            oi.qt_order_item,
+            (oi.qt_unit_price * oi.qt_order_item) AS qt_order_item_amount
+        FROM tb_order_item oi
+                 JOIN tb_product p ON oi.no_product = p.no_product
+        WHERE oi.id_order = #{orderId}
+        ORDER BY oi.cn_order_item ASC </select>
+
+</mapper>

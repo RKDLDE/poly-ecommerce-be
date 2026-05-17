@@ -1,35 +1,36 @@
 package kr.co.springbootex.ecommerce.product.query.controller;
 
-import kr.co.springbootex.ecommerce.product.query.dto.ProductDTO;
-import kr.co.springbootex.ecommerce.product.query.dto.ProductMapCategoryDTO;
-import kr.co.springbootex.ecommerce.product.query.service.ProductService;
+import kr.co.springbootex.ecommerce.product.query.dto.ProductRequestDTO;
+import kr.co.springbootex.ecommerce.product.query.dto.ProductResponseDTO;
+import kr.co.springbootex.ecommerce.product.query.service.ProductQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/products")
 public class ProductQueryController {
-    private final ProductService productService;
+    private final ProductQueryService productQueryService;
 
-    @GetMapping()
-    public List<ProductDTO> getAllProducts()
-    {
-        return productService.getAllProducts();
+    //  관리자: 전체 상품 조회
+    @GetMapping("/admin/products")
+    public Map<String, Object> getAllProducts(@ModelAttribute ProductRequestDTO productRequestDTO) {
+        return productQueryService.getAllProducts(productRequestDTO);
     }
 
-    @GetMapping("/{noProductId}")
-    public ProductDTO getProductById(@PathVariable String noProductId){
-        return productService.getProductById(noProductId);
+    // 상품 상세 조회
+    @GetMapping("/products/{noProduct}")
+    public ProductResponseDTO getProductDetail(@PathVariable("noProduct") String noProduct) {
+        return productQueryService.getProductDetail(noProduct);
     }
 
-    @GetMapping("/categorymap/{nbCategory}")
-    public List<ProductMapCategoryDTO> getProductByCategory(@PathVariable Long nbCategory){
-        return productService.getProductByCategory(nbCategory);
+    // 카테고리 별 조회
+    @GetMapping("/products")
+    public Map<String, Object> getProductsByCategory(@ModelAttribute ProductRequestDTO productRequestDTO) {
+        return productQueryService.getProductsByCategory(productRequestDTO);
     }
 }

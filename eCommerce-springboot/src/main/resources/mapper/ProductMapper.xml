@@ -3,50 +3,77 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.springbootex.ecommerce.product.query.mapper.ProductMapper">
-    <select id="findAll" resultType="kr.co.springbootex.ecommerce.product.query.dto.ProductDTO">
+    <select id="findByCategory" parameterType="kr.co.springbootex.ecommerce.product.query.dto.ProductRequestDTO" resultType="kr.co.springbootex.ecommerce.product.query.dto.ProductResponseDTO">
         SELECT
-            no_product,
-            nm_product,
-            nm_detail_explain,
-            nb_file,
-            dt_start_date,
-            dt_end_date,
-            qt_sale_price,
-            qt_stock
-        FROM tb_product
+            p.no_product,
+            p.nm_product,
+            p.qt_sale_price,
+            p.qt_stock,
+            c.nb_category,
+            c.nm_category
+        FROM tb_product p
+                 JOIN tb_category_product_mapping cp ON p.no_product = cp.no_product
+                 JOIN tb_category c ON c.nb_category = cp.nb_category
+        WHERE c.nb_category = #{categoryId} AND p.qt_stock > 0
+        ORDER BY p.no_product DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
     </select>
 
-    <select id="findById" parameterType="String" resultType="kr.co.springbootex.ecommerce.product.query.dto.ProductDTO">
-        SELECT
-            no_product,
-            nm_product,
-            nm_detail_explain,
-            nb_file,
-            dt_start_date,
-            dt_end_date,
-            qt_sale_price,
-            qt_stock
-        FROM tb_product
-        WHERE no_product=#{id}
+    <select id="countByCategory" parameterType="kr.co.springbootex.ecommerce.product.query.dto.ProductRequestDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM tb_product p
+                 JOIN tb_category_product_mapping cp ON p.no_product = cp.no_product
+        WHERE cp.nb_category = #{categoryId} AND p.qt_stock > 0
     </select>
 
-    <select id="findByCategory" parameterType="Long" resultType="kr.co.springbootex.ecommerce.product.query.dto.ProductMapCategoryDTO">
+    <select id="findById" parameterType="String" resultType="kr.co.springbootex.ecommerce.product.query.dto.ProductResponseDTO">
         SELECT
             p.no_product,
             p.nm_product,
             p.nm_detail_explain,
-            p.nb_file,
             p.dt_start_date,
             p.dt_end_date,
             p.qt_sale_price,
             p.qt_stock,
-            cp.nb_category,
+            c.nb_category,
             c.nm_category
         FROM tb_product p
-            JOIN tb_category_product_mapping cp
-                ON p.no_product = cp.no_product
-            JOIN tb_category c
-                ON c.nb_category = cp.nb_category
-        WHERE c.nb_category=#{id}
+                 LEFT JOIN tb_category_product_mapping cp ON p.no_product = cp.no_product
+                 LEFT JOIN tb_category c ON c.nb_category = cp.nb_category
+        WHERE p.no_product = #{noProduct}
+    </select>
+
+    <select id="findAllForAdmin" parameterType="kr.co.springbootex.ecommerce.product.query.dto.ProductRequestDTO" resultType="kr.co.springbootex.ecommerce.product.query.dto.ProductResponseDTO">
+        SELECT
+        p.no_product,
+        p.nm_product,
+        p.qt_sale_price,
+        p.qt_stock,
+        p.dt_start_date,
+        p.dt_end_date
+        FROM tb_product p
+        <where>
+            <if test="searchKeyword != null and searchKeyword != ''">
+                AND p.nm_product LIKE '%' || #{searchKeyword} || '%'
+            </if>
+            <if test="isSoldOut != null and isSoldOut == true">
+                AND p.qt_stock &lt;= 0
+            </if>
+        </where>
+        ORDER BY p.dt_start_date DESC, p.no_product DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
+    </select>
+
+    <select id="countAllForAdmin" parameterType="kr.co.springbootex.ecommerce.product.query.dto.ProductRequestDTO" resultType="int">
+        SELECT COUNT(*)
+        FROM tb_product p
+        <where>
+            <if test="searchKeyword != null and searchKeyword != ''">
+                AND p.nm_product LIKE '%' || #{searchKeyword} || '%'
+            </if>
+            <if test="isSoldOut != null and isSoldOut == true">
+                AND p.qt_stock &lt;= 0
+            </if>
+        </where>
     </select>
 </mapper>
